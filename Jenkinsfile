@@ -18,6 +18,13 @@ pipeline {
             steps {
                 junit 'gameoflife-web/target/surefire-reports/*.xml'
                 archiveArtifacts 'gameoflife-web/target/*.war'
+                stash name: 'warfile', includes: 'gameoflife-web/target/*.war'
+            }
+        }
+        stage('copy to other node') {
+            agent { label 'ecomm' }
+            steps {
+                unstash name: 'warfile'
             }
         }
     }
