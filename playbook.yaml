@@ -1,0 +1,18 @@
+---
+    - name: install tomcat
+      hosts: all
+      become: yes
+      tasks:
+        - name: install openjdk
+          apt:
+            name: openjdk-8-jdk
+            update_cache: yes
+            state: present
+        - name: install tomcat
+          apt:
+            name: tomcat8
+            state: present
+        - name: download game of life
+          copy:
+            src: gameoflife-web/target/gameoflife.war
+            dest: /var/lib/tomcat8/webapps/gameoflife.war

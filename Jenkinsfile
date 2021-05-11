@@ -1,12 +1,9 @@
 pipeline {
     agent any
-    triggers {
-        cron('H * * * 1-5')
-    }
     stages {
         stage('SCM') {
             steps {
-                git 'https://github.com/wakaleo/game-of-life.git'
+                git 'https://github.com/Raghu-acer/gameoflifepipeline.git'
             }
         }
         stage('Build') {
@@ -18,6 +15,11 @@ pipeline {
             steps {
                 junit 'gameoflife-web/target/surefire-reports/*.xml'
                 archiveArtifacts 'gameoflife-web/target/*.war'
+            }
+        }
+        stage('Build') {
+            steps {
+                ansiblePlaybook credentialsId: 'ansible', disableHostKeyChecking: true, installation: 'Ansible', inventory: 'host', playbook: 'playbook.yaml'
             }
         }
     }
