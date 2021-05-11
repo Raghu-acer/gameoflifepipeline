@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                sh script: 'mvn clean package'
             }
         }
         stage('post build') {
@@ -17,7 +17,7 @@ pipeline {
                 archiveArtifacts 'gameoflife-web/target/*.war'
             }
         }
-        stage('Build') {
+        stage('ansible') {
             steps {
                 ansiblePlaybook credentialsId: 'ansible', disableHostKeyChecking: true, installation: 'Ansible', inventory: 'host', playbook: 'playbook.yaml'
             }
